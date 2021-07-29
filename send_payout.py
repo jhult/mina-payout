@@ -1,5 +1,5 @@
 import pprint
-from codaclient import CodaClient
+from src.codaclient import CodaClient
 import time
 from pprint import pprint
 import random
