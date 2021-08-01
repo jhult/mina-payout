@@ -11,8 +11,9 @@ public_key = "B62qjhiEXP45KEk8Fch4FnYJQ7UMMfiR3hq9ZeMUZ8ia3MbfEteSYDg"  # Public
 decimal_       = 1e9
 staking_epoch  = 8  # To ensure we only get blocks from the current staking epoch as the ledger may be different
 fee            = 0.07  # The fee percentage to charge
+SP_FEE         = 0.07  # Commission for supercharged blocks
 foundation_fee = 0.05
-foundation_secure_sum = 0.05 * decimal_
+foundation_secure_sum = 0.01 * decimal_
 min_height     = 0  # This can be the last known payout or this could vary the query to be a starting date
 latest_block   = 0
 confirmations  = 15  # Can set this to any value for min confirmations up to `k`
@@ -199,7 +200,7 @@ for p in payouts:
         p["percentage_of_SP"] = float(p["staking_balance"]) / total_staking_balance_unlocked
         p["percentage_of_total"] = float(p["staking_balance"]) / total_staking_balance
         p["total_reward"]        = float(total_reward * p["percentage_of_total"] * (1 - fee))
-        p["total_reward"] = p["total_reward"] + (float(all_x2_block_rewards * p["percentage_of_SP"] * (1 - fee)))
+        p["total_reward"] = p["total_reward"] + (float(all_x2_block_rewards * p["percentage_of_SP"] * (1 - SP_FEE)))
 
     else:
         p["percentage_of_total"] = float(p["staking_balance"]) / total_staking_balance
