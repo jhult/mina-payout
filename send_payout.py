@@ -1,24 +1,28 @@
 import pprint
 from src.codaclient import CodaClient
 import time
-from pprint import pprint
-import random
+import yaml
 
-graphql = CodaClient.Client(graphql_host="127.0.0.1", graphql_port="3085")
-VALIDATOR_NAME    = "c29r3"
-EPOCH             = 8
-WALLET_PASSWORD   = ""
-default_fee       = 10000000
-send_from         = graphql.get_wallets()["ownedWallets"][1]["publicKey"]  # coinbase receiver
+c = yaml.load(open('config.yml', encoding='utf8'), Loader=yaml.SafeLoader)
+GRAPHQL_HOST      = str(c("GRAPHQL_HOST"))
+GRAPHQL_PORT      = str(c("GRAPHQL_PORT"))
+VALIDATOR_NAME    = str(c("VALIDATOR_NAME"))
+EPOCH             = int(c["STAKING_EPOCH_NUMBER"])
+WALLET_PASSWORD   = str(c("WALLET_PASSWORD"))
+default_fee       = int(c["DEFAULT_TX_FEE"])
+send_from         = str(c("SEND_FROM_ADDRESS"))  # coinbase receiver
+TX_CHECK_TIMER    = int(c["TX_CHECK_TIMER_SECONDS"])
+
 MEMO              = f'e{EPOCH}_{VALIDATOR_NAME}'
 FILE_WITH_PAYOUTS = f'e{EPOCH}_payouts.csv'
 DECIMAL           = 1e9
 TIMEOUT           = 1
 TX_LIST_TO_CHECK  = []
-TX_CHECK_TIMER    = 1200    # 1200 sec = 20 min
 FAILED_PAYOUTS    = 0
 FAILED_PAYOUTS_FILE = f"failed_payouts_{EPOCH}.csv"
 FAILED_PAYOUTS_LST  = []
+
+graphql = CodaClient.Client(graphql_host=GRAPHQL_HOST, graphql_port=GRAPHQL_PORT)
 
 print(f"Epoch: {EPOCH}")
 print(graphql.get_wallets())
