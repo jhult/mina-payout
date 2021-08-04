@@ -11,6 +11,7 @@ git clone https://github.com/c29r3/mina-payout.git \
 && cd mina-payout \
 && pip3 install -r requirements.txt
 ```
-
+## Disclaimer  
+The script is provided as is. The author does not bear any responsibility for your mistakes and carelessness.
 
 *This script based on https://github.com/garethtdavies/mina-payout-script. Thanks to Gareth Davies*
