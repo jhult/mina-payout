@@ -11,6 +11,10 @@ git clone https://github.com/c29r3/mina-payout.git \
 && cd mina-payout \
 && pip3 install -r requirements.txt
 ```
+
+## Settings  
+Take a close look at the contents of `config.yml`
+
 ## Disclaimer  
 The script is provided as is. The author does not bear any responsibility for your mistakes and carelessness.
 
