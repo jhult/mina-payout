@@ -2,21 +2,21 @@ from tabulate import tabulate
 import GraphQL
 import os
 import decimal
-from pprint import pprint
+import yaml
 
+c = yaml.load(open('config.yml', encoding='utf8'), Loader=yaml.SafeLoader)
 ################################################################
 # Define the payout calculation here
 ################################################################
-public_key = "B62qjhiEXP45KEk8Fch4FnYJQ7UMMfiR3hq9ZeMUZ8ia3MbfEteSYDg"  # Public key of the block producer
+public_key     = str(c["VALIDATOR_ADDRESS"])
+staking_epoch  = int(c["STAKING_EPOCH_NUMBER"])
+fee            = float(c["VALIDATOR_FEE"])
+SP_FEE         = float(c["VALIDATOR_FEE_SP"])
+foundation_fee = float(c["VALIDATOR_FEE_FOUNDATION"])
+min_height     = int(c["FIRST_BLOCK_HEIGHT"])  # This can be the last known payout or this could vary the query to be a starting date
+latest_block   = int(c["LATEST_BLOCK_HEIGHT"])
+confirmations  = int(c["CONFIRMATIONS_NUM"])  # Can set this to any value for min confirmations up to `k`
 decimal_       = 1e9
-staking_epoch  = 8  # To ensure we only get blocks from the current staking epoch as the ledger may be different
-fee            = 0.07  # The fee percentage to charge
-SP_FEE         = 0.07  # Commission for supercharged blocks
-foundation_fee = 0.05
-foundation_secure_sum = 0.01 * decimal_
-min_height     = 0  # This can be the last known payout or this could vary the query to be a starting date
-latest_block   = 0
-confirmations  = 15  # Can set this to any value for min confirmations up to `k`
 COINBASE       = 720
 
 
@@ -194,7 +194,7 @@ except:
 for p in payouts:
     if p["foundation_delegation"] is True:
         p["percentage_of_total"] = float(p["staking_balance"]) / total_staking_balance
-        p["total_reward"] = float(total_reward * p["percentage_of_total"] * (1 - foundation_fee) + foundation_secure_sum)
+        p["total_reward"] = float(total_reward * p["percentage_of_total"] * (1 - foundation_fee))
 
     elif p["timed_weighting"] == "unlocked":
         p["percentage_of_SP"] = float(p["staking_balance"]) / total_staking_balance_unlocked
